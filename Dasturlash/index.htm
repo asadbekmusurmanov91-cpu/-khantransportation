@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Khan Transportation</title>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; color: #111; }
+
+  section[hidden] { display: none !important; }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px; background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    position: sticky; top: 0; z-index: 999;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-text { font-size: 20px; font-weight: 800; color: #111; letter-spacing: 1px; }
+  .logo-text span { color: #F47B00; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: #111; font-weight: 600; font-size: 15px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #F47B00; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .lang-btn {
+    background: none; border: none; cursor: pointer;
+    font-weight: 700; font-size: 14px; color: #555;
+  }
+  .lang-btn.active { color: #F47B00; }
+  .get-quote {
+    padding: 10px 24px; border: 2px solid #F47B00; border-radius: 50px;
+    color: #F47B00; font-weight: 700; font-size: 14px;
+    text-decoration: none; transition: all .2s;
+  }
+  .get-quote:hover { background: #F47B00; color: #fff; }
+
+  /* ─── HERO ─── */
+  #home {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 80px 60px; background: #f7f7f7;
+    background-image: radial-gradient(#ddd 1px, transparent 1px);
+    background-size: 24px 24px; min-height: 90vh;
+    gap: 40px;
+  }
+  .hero-left { max-width: 560px; }
+  .hero-left h1 {
+    font-size: 52px; font-weight: 900; line-height: 1.1; color: #111;
+    text-transform: uppercase;
+  }
+  .hero-left h1 span { color: #F47B00; }
+  .hero-sub {
+    font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: #333;
+  }
+  .hero-desc { font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 36px; }
+  .stats { display: flex; gap: 50px; }
+  .stat-num { font-size: 44px; font-weight: 900; color: #F47B00; }
+  .stat-label {
+    font-size: 13px; font-weight: 700; color: #555;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* container crane */
+  .hero-right { position: relative; flex-shrink: 0; }
+  .crane-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    animation: swing 3s ease-in-out infinite;
+  }
+  @keyframes swing {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+  }
+  .crane-line { width: 3px; height: 70px; background: #888; margin: 0 auto; }
+  .crane-hook { font-size: 22px; text-align: center; color: #888; }
+  .container-box {
+    width: 340px; height: 190px; background: #1a1a1a;
+    border-radius: 6px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; position: relative;
+    overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.4);
+  }
+  .container-lines {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; gap: 22px; padding: 0 8px;
+  }
+  .container-lines div { width: 2px; background: rgba(255,255,255,.08); height: 100%; }
+  .container-text { position: relative; z-index: 2; text-align: center; }
+  .c-fast { font-size: 18px; font-weight: 900; color: #F47B00; letter-spacing: 3px; }
+  .c-reliable { font-size: 26px; font-weight: 900; color: #fff; letter-spacing: 2px; }
+  .c-banner {
+    background: rgba(255,255,255,.15); padding: 4px 28px;
+    font-size: 13px; color: #fff; font-weight: 700;
+    letter-spacing: 2px; margin: 6px 0;
+  }
+  .c-trucking { font-size: 15px; color: rgba(255,255,255,.7); letter-spacing: 4px; }
+
+  /* ─── SECTION TAG ─── */
+  .section-tag {
+    display: inline-block; border-left: 3px solid #F47B00;
+    padding-left: 10px; font-size: 13px; color: #F47B00;
+    font-weight: 700; margin-bottom: 12px; text-transform: uppercase;
+  }
+
+  /* ─── ABOUT ─── */
+  #about { background: #fff; }
+
+  .about-banner {
+    padding: 70px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+  .about-banner::before {
+    content:"";
+    position:absolute;
+    inset:-40px;
+    background:
+      radial-gradient(circle at 15% 40%, rgba(0,0,0,.07) 1px, transparent 2px) 0 0/14px 14px,
+      radial-gradient(circle at 85% 30%, rgba(0,0,0,.06) 1px, transparent 2px) 0 0/16px 16px;
+    opacity:.55;
+    pointer-events:none;
+  }
+  .about-banner h2 {
+    position: relative;
+    z-index: 2;
+    font-size: 56px;
+    font-weight: 950;
+    letter-spacing: .5px;
+    color:#111;
+  }
+
+  .about-wrap {
+    padding: 80px 60px 40px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 60px;
+  }
+  .about-left { flex: 1; max-width: 640px; }
+  .about-left h3 {
+    font-size: 44px;
+    font-weight: 950;
+    line-height: 1.12;
+    margin-bottom: 14px;
+  }
+  .about-left p {
+    font-size: 15px;
+    color:#666;
+    line-height: 1.9;
+    margin-bottom: 16px;
+    max-width: 560px;
+  }
+  .about-features {
+    margin-top: 26px;
+    display:flex;
+    flex-direction:column;
+    gap: 18px;
+    list-style:none;
+    padding:0;
+  }
+  .about-features li {
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    font-weight: 800;
+    color:#111;
+  }
+  .about-features .feat-ico {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f2f2f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .about-right {
+    flex: 1;
+    position: relative;
+    min-height: 540px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .truck-showcase {
+    position: relative;
+    width: min(560px, 100%);
+    height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .truck-glow {
+    position: absolute;
+    left: 40px;
+    top: 55px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff9b57 0%, #ff6a1a 45%, #c63b00 78%, rgba(198,59,0,0) 100%);
+    box-shadow: 0 0 45px rgba(255,106,26,.35);
+    z-index: 1;
+  }
+  .truck-main-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 25px 35px rgba(0,0,0,.28));
+  }
+
+  /* ─── BRANDS ─── */
+  #brands {
+    padding: 26px 60px 70px;
+    background:#fff;
+  }
+  .brands-row {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    align-items: center;
+    gap: 28px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+  }
+  .brand-logo {
+    text-align: center;
+    color: #9a9a9a;
+    opacity: .8;
+    transition: all .25s ease;
+    user-select: none;
+  }
+  .brand-logo:hover { opacity: 1; transform: translateY(-2px); }
+  .brand-amazon { font-size: 20px; font-weight: 700; text-transform: lowercase; }
+  .brand-dhl {
+    font-size: 22px; font-weight: 900; font-style: italic; letter-spacing: 1px;
+    display: inline-block; padding: 4px 18px;
+    border-top: 4px solid #d8d8d8; border-bottom: 4px solid #d8d8d8;
+  }
+  .brand-fedex { font-size: 26px; font-weight: 900; }
+  .brand-ups {
+    width: 62px; height: 72px; margin: 0 auto;
+    border: 3px solid #cfcfcf; border-radius: 16px 16px 24px 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 900;
+  }
+  .brand-usps { font-size: 12px; font-weight: 800; line-height: 1.3; text-transform: uppercase; letter-spacing: .6px; }
+  .brand-walmart { font-size: 20px; font-weight: 700; }
+  .brand-walmart span { font-size: 20px; margin-left: 4px; }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonials { padding: 10px 60px 90px; background:#fff; }
+  .test-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .test-card {
+    background:#fff; border-radius: 14px; padding: 34px 28px;
+    border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    position:relative; min-height: 260px;
+  }
+  .test-card::before {
+    content:"\201C"; position:absolute; top: 14px; left: 18px;
+    font-size: 58px; color: rgba(244,123,0,.18); font-weight: 900; line-height: 1;
+  }
+  .test-card p { color:#666; line-height: 1.9; font-size: 14px; position: relative; z-index: 1; }
+
+  /* ─── SERVICES ─── */
+  #services { padding: 90px 60px; background: #fff; }
+  #services h2 { font-size: 36px; font-weight: 900; margin-bottom: 50px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+  .service-card { display: flex; flex-direction: column; gap: 10px; }
+  .svc-icon { font-size: 42px; }
+  .service-card h3 { font-size: 16px; font-weight: 800; color: #111; }
+  .service-card p { font-size: 14px; color: #777; line-height: 1.6; }
+
+  /* ─── CAREER ─── */
+  #career { display: flex; align-items: center; gap: 60px; padding: 90px 60px; background: #f7f7f7; }
+  .career-img { flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.15); }
+  .career-img img { width: 100%; display: block; object-fit: cover; height: 400px; }
+  .career-content { flex: 1; }
+  .career-content h2 { font-size: 36px; font-weight: 900; margin-bottom: 20px; }
+  .career-content p { font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 24px; }
+  .career-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .career-list li { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+  .career-list li::before {
+    content: '✓'; width: 26px; height: 26px; background: #F47B00;
+    border-radius: 50%; color: #fff; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; flex-shrink: 0;
+  }
+  .apply-btn {
+    display: inline-block; padding: 14px 36px; background: #F47B00;
+    color: #fff; border-radius: 50px; font-weight: 800;
+    font-size: 15px; text-decoration: none; transition: background .2s;
+  }
+  .apply-btn:hover { background: #d66a00; }
+
+  /* ─── CONTACT ─── */
+  #contact { padding: 90px 60px; background: #fff; }
+  #contact > h2 { font-size: 36px; font-weight: 900; text-align: center; margin-bottom: 50px; }
+  .contact-cards { display: flex; justify-content: center; gap: 50px; margin-bottom: 70px; flex-wrap: wrap; }
+  .contact-card { text-align: center; }
+  .contact-icon {
+    width: 60px; height: 60px; background: #fff8f0;
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 24px; margin: 0 auto 14px;
+    box-shadow: 0 4px 14px rgba(244,123,0,.15);
+  }
+  .contact-card h4 { font-size: 11px; font-weight: 800; color: #999; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .contact-card p { font-size: 15px; font-weight: 600; color: #111; }
+  .contact-card a { color: #F47B00; text-decoration: none; font-weight: 600; font-size: 15px; }
+  .contact-card a:hover { text-decoration: underline; }
+
+  /* ─── FORM ─── */
+  .form-wrap {
+    max-width: 560px; margin: 0 auto; background: #222;
+    border-radius: 16px; padding: 48px; position: relative; overflow: hidden;
+  }
+  .form-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80')
+      center/cover no-repeat; opacity: .08;
+  }
+  .form-inner { position: relative; z-index: 2; }
+  .form-tag { display: inline-block; background: #444; color: #ccc; font-size: 12px; padding: 4px 12px; border-radius: 4px; margin-bottom: 16px; }
+  .form-wrap h3 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+  .form-wrap p { font-size: 14px; color: #aaa; margin-bottom: 28px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; color: #ccc; margin-bottom: 6px; }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 12px 16px; background: #333;
+    border: none; border-radius: 8px; color: #fff; font-size: 14px; outline: none;
+  }
+  .form-group textarea { height: 110px; resize: vertical; }
+  .submit-btn {
+    margin-top: 8px; padding: 14px 40px; background: #F47B00;
+    color: #fff; border: none; border-radius: 50px;
+    font-weight: 800; font-size: 15px; cursor: pointer;
+    letter-spacing: 1px; transition: background .2s;
+  }
+  .submit-btn:hover { background: #d66a00; }
+
+  .form-success {
+    display: none;
+    background: #1a3a1a;
+    border: 1px solid #2d6a2d;
+    color: #7be07b;
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #111; color: #aaa; text-align: center;
+    padding: 30px 60px; font-size: 13px;
+  }
+  footer span { color: #F47B00; font-weight: 700; }
+
+  /* ─── MOBILE ─── */
+  @media(max-width:900px){
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    #home { flex-direction: column; padding: 50px 24px; text-align: center; }
+    .hero-left h1 { font-size: 34px; }
+    .hero-right { margin-top: 40px; }
+    .container-box { width: 260px; height: 150px; }
+    .stats { justify-content: center; }
+    .about-banner { padding: 54px 24px; }
+    .about-banner h2 { font-size: 40px; }
+    .about-wrap { padding: 60px 24px 20px; flex-direction: column; gap: 34px; }
+    .about-right { min-height: auto; }
+    .truck-showcase { width: 100%; height: 360px; }
+    .truck-glow { width: 180px; height: 180px; left: 20px; top: 55px; }
+    .truck-main-img { max-width: 100%; }
+    #brands { padding: 20px 24px 60px; }
+    .brands-row { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    #testimonials { padding: 20px 24px 70px; }
+    .test-grid { grid-template-columns: 1fr; }
+    #services { padding: 60px 24px; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    #career { flex-direction: column; padding: 60px 24px; }
+    #contact { padding: 60px 24px; }
+    .contact-cards { gap: 30px; }
+    .form-wrap { padding: 32px 24px; }
+  }
+  @media(max-width:600px){
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+<nav>
+  <a href="#home" class="logo">
+    <span class="logo-text">KHAN <span>TRANSPORTATION</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#career">Career</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <span style="color:#ccc">|</span>
+    <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    <a href="#contact" class="get-quote" data-en="GET QUOTE" data-ru="ПОЛУЧИТЬ ЦЕНУ">GET QUOTE</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="home">
+  <div class="hero-left">
+    <h1 data-en="YOUR GOODS, OUR FLEET —<br>LET'S MOVE. <span>LET'S MOVE!</span>"
+        data-ru="ВАШ ГРУЗ, НАШ ФЛОТ —<br>ДВИГАЕМСЯ. <span>ДВИГАЕМСЯ!</span>">
+      YOUR GOODS, OUR FLEET —<br>LET'S MOVE. <span>LET'S MOVE!</span>
+    </h1>
+    <p class="hero-sub"
+       data-en="Fast, reliable and dedicated trucking across 48 states."
+       data-ru="Быстрая, надёжная доставка грузов по 48 штатам.">
+      Fast, reliable and dedicated trucking across 48 states.
+    </p>
+    <p class="hero-desc"
+       data-en="Operating since 2021, we deliver consistent service, transparent communication, and on-time performance you can trust. Operating Nationwide Since 2021 — Dedicated & OTR Solutions."
+       data-ru="Работаем с 2021 года. Мы обеспечиваем стабильный сервис, прозрачную связь и своевременную доставку по всей стране — Dedicated и OTR решения.">
+      Operating since 2021, we deliver consistent service, transparent communication,
+      and on-time performance you can trust. Operating Nationwide Since 2021 —
+      Dedicated &amp; OTR Solutions.
+    </p>
+    <div class="stats">
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label" data-en="Years Experience" data-ru="Лет опыта">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">3000+</div>
+        <div class="stat-label" data-en="Satisfied Clients" data-ru="Довольных клиентов">Satisfied Clients</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="crane-wrap">
+      <div class="crane-line"></div>
+      <div class="crane-hook">🪝</div>
+      <div class="container-box">
+        <div class="container-lines">
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+        </div>
+        <div class="container-text">
+          <div class="c-fast">FAST</div>
+          <div class="c-reliable">RELIABLE</div>
+          <div class="c-banner">KHAN TRANSPORTATION</div>
+          <div class="c-trucking">TRUCKING</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
+<section id="about" hidden>
+  <div class="about-banner">
+    <h2 data-en="About Us" data-ru="О нас">About Us</h2>
+  </div>
+
+  <div class="about-wrap">
+    <div class="about-left">
+      <h3 data-en="We provide full range global logistics solution"
+          data-ru="Мы предоставляем полный спектр глобальных логистических решений">
+        We provide full range global logistics solution
+      </h3>
+      <p data-en="Our logistics company specializes in general freight transportation using semi trucks and trailers, serving interstate destinations across the United States. We have built a reputation for reliability, efficiency, and excellent customer service."
+         data-ru="Наша логистическая компания специализируется на перевозке генеральных грузов с использованием тягачей и прицепов по США. Мы заслужили репутацию надёжности, эффективности и отличного сервиса.">
+        Our logistics company specializes in general freight transportation using semi trucks
+        and trailers, serving interstate destinations across the United States. We have built
+        a reputation for reliability, efficiency, and excellent customer service.
+      </p>
+      <p data-en="Our extensive network and fleet of well-maintained vehicles enable us to handle various types of freight efficiently and securely."
+         data-ru="Наша широкая сеть и парк обслуженных автомобилей позволяют эффективно и безопасно перевозить разные типы грузов.">
+        Our extensive network and fleet of well-maintained vehicles enable us to handle
+        various types of freight efficiently and securely.
+      </p>
+      <ul class="about-features">
+        <li>
+          <span class="feat-ico">📦</span>
+          <span data-en="Delivery on Time" data-ru="Доставка вовремя">Delivery on Time</span>
+        </li>
+        <li>
+          <span class="feat-ico">💰</span>
+          <span data-en="Optimized Travel Cost" data-ru="Оптимизация затрат на перевозку">Optimized Travel Cost</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="about-right">
+      <div class="truck-showcase">
+        <div class="truck-glow"></div>
+        <img src="./img/img/IMG_1494.JPG" alt="Black truck" class="truck-main-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BRANDS ═══════════════════════════════ -->
+<section id="brands" aria-label="Partners" hidden>
+  <div class="brands-row">
+    <div class="brand-logo brand-amazon">amazon</div>
+    <div class="brand-logo"><span class="brand-dhl">DHL</span></div>
+    <div class="brand-logo brand-fedex">FedEx</div>
+    <div class="brand-logo"><div class="brand-ups">UPS</div></div>
+    <div class="brand-logo brand-usps">UNITED STATES<br>POSTAL SERVICE</div>
+    <div class="brand-logo brand-walmart">Walmart <span>✳</span></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ TESTIMONIALS ═══════════════════════════════ -->
+<section id="testimonials" hidden>
+  <div class="test-grid">
+    <div class="test-card">
+      <p data-en="Partnering with us has transformed brokerage operations. Our coverage means you can confidently ship to any destination. 24/7 tracking gives peace of mind, and communication stays clear."
+         data-ru="Сотрудничество с нами улучшает процессы: широкое покрытие, 24/7 отслеживание и понятная коммуникация дают уверенность в каждой перевозке.">
+        Partnering with us has transformed brokerage operations. Our coverage means you can
+        confidently ship to any destination. 24/7 tracking gives peace of mind, and
+        communication stays clear.
+      </p>
+    </div>
+    <div class="test-card">
+      <p data-en="Reliable, professional, and responsive—exactly what we need for time-sensitive freight. Fewer delays, better planning, and consistent updates from dispatch."
+         data-ru="Надёжно, профессионально и быстро реагируют — именно то, что нужно для срочных перевозок. Меньше задержек, лучше планирование и постоянные обновления от диспетчерской.">
+        Reliable, professional, and responsive—exactly what we need for time-sensitive freight.
+        Fewer delays, better planning, and consistent updates from dispatch.
+      </p>
+    </div>
+    <div class="test-card">
+      <p data-en="Timely delivery is everything. Real-time tracking keeps customers informed, and drivers represent the brand well. Support handles special requests quickly."
+         data-ru="Своевременная доставка — ключевое. Онлайн-отслеживание информирует клиентов, водители работают профессионально, а поддержка быстро решает нестандартные запросы.">
+        Timely delivery is everything. Real-time tracking keeps customers informed, and
+        drivers represent the brand well. Support handles special requests quickly.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SERVICES ═══════════════════════════════ -->
+<section id="services" hidden>
+  <div class="section-tag" data-en="What We Do" data-ru="Наши услуги">What We Do</div>
+  <h2 data-en="Our Logistics Services" data-ru="Наши логистические услуги">Our Logistics Services</h2>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="svc-icon">🏭</div>
+      <h3 data-en="Warehousing Services" data-ru="Складские услуги">Warehousing Services</h3>
+      <p data-en="Secure and organized storage solutions for your cargo."
+         data-ru="Безопасное и организованное хранение вашего груза.">
+        Secure and organized storage solutions for your cargo.
+      </p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🚛</div>
+      <h3 data-en="OTR & Dedicated Shipping" data-ru="OTR и выделенная доставка">OTR &amp; Dedicated Shipping</h3>
+      <p data-en="Reliable long-haul transportation across all 48 states."
+         data-ru="Надёжные дальние перевозки по всем 48 штатам.">
+        Reliable long-haul transportation across all 48 states.
+      </p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">📦</div>
+      <h3 data-en="Freight Dispatch" data-ru="Диспетчерские услуги">Freight Dispatch</h3>
+      <p data-en="Professional load planning and full dispatch coordination."
+         data-ru="Профессиональное планирование грузов и полная координация.">
+        Professional load planning and full dispatch coordination.
+      </p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">⚡</div>
+      <h3 data-en="Fast Delivery" data-ru="Быстрая доставка">Fast Delivery</h3>
+      <p data-en="With expedited delivery options available nationwide."
+         data-ru="Ускоренная доставка по всей стране.">
+        With expedited delivery options available nationwide.
+      </p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">✅</div>
+      <h3 data-en="Reliable" data-ru="Надёжность">Reliable</h3>
+      <p data-en="24/7 real-time status and location tracking updates."
+         data-ru="Отслеживание груза в режиме реального времени 24/7.">
+        24/7 real-time status and location tracking updates.
+      </p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🎯</div>
+      <h3 data-en="Efficient" data-ru="Эффективность">Efficient</h3>
+      <p data-en="Experienced team driving to keep your goods on the go."
+         data-ru="Опытная команда для бесперебойного движения ваших грузов.">
+        Experienced team driving to keep your goods on the go.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CAREER ═══════════════════════════════ -->
+<section id="career" hidden>
+  <div class="career-img">
+    <img src="./img/img/photo_2026-04-30_09-55-43.jpg" alt="Truck drivers"/>
+  </div>
+  <div class="career-content">
+    <div class="section-tag" data-en="Join Us" data-ru="Присоединяйтесь">Join Us</div>
+    <h2 data-en="Drive With Us" data-ru="Работайте с нами">Drive With Us</h2>
+    <p data-en="We are always looking for experienced, motivated, and professional drivers to join our growing team across the United States."
+       data-ru="Мы всегда ищем опытных, мотивированных и профессиональных водителей для нашей растущей команды по всей стране.">
+      We are always looking for experienced, motivated, and professional drivers
+      to join our growing team across the United States.
+    </p>
+    <ul class="career-list">
+      <li data-en="Competitive Pay" data-ru="Высокая оплата труда">Competitive Pay</li>
+      <li data-en="Flexible Schedules" data-ru="Гибкий график">Flexible Schedules</li>
+      <li data-en="Nationwide Routes" data-ru="Маршруты по всей стране">Nationwide Routes</li>
+      <li data-en="Dedicated & OTR Positions" data-ru="Dedicated и OTR позиции">Dedicated &amp; OTR Positions</li>
+      <li data-en="Supportive Dispatch Team" data-ru="Поддерживающая команда диспетчеров">Supportive Dispatch Team</li>
+    </ul>
+    <a href="#contact" class="apply-btn" data-en="APPLY NOW" data-ru="ПОДАТЬ ЗАЯВКУ">APPLY NOW</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
+<section id="contact" hidden>
+  <h2 data-en="Contact" data-ru="Контакты">Contact</h2>
+
+  <div class="contact-cards">
+    <div class="contact-card">
+      <div class="contact-icon">📞</div>
+      <h4 data-en="Phone" data-ru="Телефон">Phone</h4>
+      <p><a href="tel:+19085407172">+1 (908) 540-7172</a></p>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon">📧</div>
+      <h4 data-en="Email" data-ru="Электронная почта">Email</h4>
+      <p><a href="mailto:hr@shonexinc.com">hr@shonexinc.com</a></p>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon">📍</div>
+      <h4 data-en="Location" data-ru="Локация">Location</h4>
+      <p data-en="423 Wards Corner Road, Ste D, Loveland OH"
+         data-ru="423 Wards Corner Road, Ste D, Loveland OH">
+        423 Wards Corner Road, Ste D, Loveland OH
+      </p>
+    </div>
+  </div>
+
+  <div class="form-wrap">
+    <div class="form-inner">
+      <span class="form-tag" data-en="Contact Us" data-ru="Свяжитесь с нами">Contact Us</span>
+      <h3 data-en="How can we help you?" data-ru="Как мы можем помочь?">How can we help you?</h3>
+      <p data-en="Whatever you need delivered, we are here to help."
+         data-ru="Что бы вы ни хотели доставить, мы готовы помочь.">
+        Whatever you need delivered, we are here to help.
+      </p>
+
+      <form id="contactForm"
+            action="https://api.web3forms.com/submit"
+            method="POST" 
+            autocomplete="off">
+
+        <input type="hidden" name="access_key" value="a3ee121f-7658-4e33-b4ea-a2f0d8a70733">
+        <input type="hidden" name="redirect" value="false">
+
+        <div class="form-group">
+          <label data-en="Full Name" data-ru="Полное имя">Full Name</label>
+          <input type="text" name="name" placeholder="John Smith" autocomplete="off" required />
+        </div>
+        <div class="form-group">
+          <label data-en="Phone Number" data-ru="Номер телефона">Phone Number</label>
+          <input type="tel" name="phone" placeholder="+1 (908) 540-7172" autocomplete="off" required />
+        </div>
+        <div class="form-group">
+          <label data-en="Your Email" data-ru="Ваш Email">Your Email</label>
+          <input type="email" name="email" placeholder="hr@shonexinc.com" autocomplete="off" required />
+        </div>
+        <div class="form-group">
+          <label data-en="Your Message" data-ru="Ваше сообщение">Your Message</label>
+          <textarea name="message" placeholder="Type your message here..." autocomplete="off" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" data-en="SUBMIT" data-ru="ОТПРАВИТЬ">SUBMIT</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        ✅ <span data-en="Your message has been sent! We will contact you soon."
+                 data-ru="Ваше сообщение отправлено! Мы свяжемся с вами в ближайшее время.">
+          Your message has been sent! We will contact you soon.
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <p>© 2025 <span>Khan Transportation</span>. All Rights Reserved.</p>
+</footer>
+
+<script>
+  /* ─── LANGUAGE SWITCHER ─── */
+  function setLang(lang) {
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+      el.innerHTML = el.getAttribute('data-' + lang);
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang);
+    });
+  }
+
+  /* ─── ROUTER ─── */
+  const allSections = ['home', 'about', 'brands', 'testimonials', 'services', 'career', 'contact'];
+
+  const routes = {
+    home:     ['home'],
+    about:    ['about', 'brands', 'testimonials'],
+    services: ['services'],
+    career:   ['career'],
+    contact:  ['contact']
+  };
+
+  function showRoute(routeName) {
+    const show = routes[routeName] || routes.home;
+    allSections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.hidden = !show.includes(id);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleRoute() {
+    const hash = (location.hash || '#home').slice(1);
+    const routeName = Object.keys(routes).find(r => r === hash) || 'home';
+    showRoute(routeName);
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id || !document.getElementById(id)) return;
+      e.preventDefault();
+      history.pushState(null, '', '#' + id);
+      handleRoute();
+    });
+  });
+
+  window.addEventListener('popstate', handleRoute);
+  handleRoute();
+
+  /* ─── FORM SUBMIT ─── */
+  const form = document.getElementById('contactForm');
+  const successMsg = document.getElementById('formSuccess');
+
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = form.querySelector('.submit-btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          form.reset();
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+        } else {
+          alert('Error: ' + (data.message || 'Submission failed. Please try again.'));
+          btn.textContent = 'SUBMIT';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        alert('Network error. Please check your connection and try again.');
+        btn.textContent = 'SUBMIT';
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
